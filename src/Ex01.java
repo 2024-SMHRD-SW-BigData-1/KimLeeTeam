@@ -10,6 +10,16 @@ public class Ex01 {
 		System.out.println("팀원 네번째 커밋");
 		System.out.println("팀원 마지막 커밋");
 
+
+	
+	
+		System.out.println("teset 123");
+		
+		System.out.println("나만의 작업공간(branch)에 커밋하기");
+		
+		
 	}
 
 }
+
+
