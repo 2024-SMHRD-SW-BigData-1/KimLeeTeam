@@ -1,11 +1,9 @@
 package View;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Scanner;
+
+import Controller.Controller;
+import Model.DTO;
 
 public class Main {
 
@@ -22,19 +20,42 @@ public class Main {
 			}else if(select == 2) {
 				//로그인
 			}else if(select == 3) {
+				
 				//아이디찾기
+				System.out.println("===== 아이디 찾기 =====");
+				
+				System.out.print("이름 입력 >> ");
+				String U_NM = sc.next();
+				System.out.print("폰번호 뒤 4자리 입력 >> ");
+				int U_PH = sc.nextInt();
+				
+				DTO dto = new DTO(U_NM, U_PH);
+				Controller con = new Controller();
+				con.F_FIND_ID(dto);
+				
 			}else if(select == 4) {
 				//비밀번호찾기
+				System.out.println("===== 비밀번호 찾기 =====");
+				
+				System.out.print("아이디 입력 >> ");
+				String U_ID = sc.next();
+				System.out.print("이름 입력 >> ");
+				String U_NM = sc.next();
+				
+				DTO dto = new DTO(U_ID, U_NM);
+				Controller con = new Controller();
+				con.F_FIND_PW(dto);
+				
 			}else if(select == 5) {
 				//회원탈퇴
 			}else {
 				//게임나가기
 				System.out.println("게임 종료");
+				break;
 			}
-		
+			
 		}
 
 	}
 
 }
-	
