@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,6 +11,32 @@ public class DAO {
 	Connection conn = null;
 	PreparedStatement psmt = null;
 	ResultSet rs = null;
+
+	// 회원정보 삭제
+	public int U_DEL(DTO dto) { // U_ID, U_PW
+
+		int cnt = 0;
+		dbOpen();
+
+		String sql = "DELETE FROM TB_USER WHERE U_ID = ? AND U_PW = ?";
+
+		try {
+			psmt = conn.prepareStatement(sql);
+
+			psmt.setString(1, dto.getU_ID());
+			psmt.setString(2, dto.getU_PW());
+
+			cnt = psmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("sql 실행 에러");
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+		return cnt;
+
+	}
 
 	// 데이터베이스와의 동적로딩/권한확인
 	public void dbOpen() {
