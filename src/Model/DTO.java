@@ -1,21 +1,34 @@
-package Model;
+package model;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class DTO {
 
-	private String U_NM;
 	private String U_ID;
 	private String U_PW;
-	private String U_PH;
+	private String U_NM;
+	private int U_SC;
+	private int U_PH;
 
-	public DTO(String U_NM, String U_ID, String U_PW, String U_PH) {
-		this.U_NM = U_NM;
+	public DTO(String U_ID, String U_PW, String U_NM, int U_SC, int U_PH) {
 		this.U_ID = U_ID;
 		this.U_PW = U_PW;
+		this.U_NM = U_NM;
+		this.U_SC = U_SC;
 		this.U_PH = U_PH;
 
 	}
 
-	
+	// 회원정보 삭제, 로그인 목적
+	public DTO(String U_ID, String U_PW) {
+		this.U_ID = U_ID;
+		this.U_PW = U_PW;
+	}
+
 	// getter, setter
 	public String getU_NM() {
 		return U_NM;
@@ -41,13 +54,20 @@ public class DTO {
 		this.U_PW = u_PW;
 	}
 
-	public String getU_PH() {
+	public int getU_PH() {
 		return U_PH;
 	}
 
-	public void setU_PH(String u_PH) {
-		this.U_PH = u_PH;
+	public void setU_PH(int u_PH) {
+		this.U_PH = U_PH;
 	}
-	
+
+	public int getU_SC() {
+		return U_SC;
+	}
+
+	public void setU_SC(int u_SC) {
+		U_SC = u_SC;
+	}
 
 }
