@@ -1,0 +1,86 @@
+package JDBC기초;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class Ex04Update {
+
+	public static void main(String[] args) {
+         
+		Scanner sc = new Scanner(System.in);
+		  PreparedStatement psmt = null;
+	      Connection con = null;
+		
+		
+		//사용자로 부터 이름과 나이 성별을 입력받아서 학과를 수정할 수 있도록 만들자!
+		System.out.println("==== 학생 정보 수정 ====");
+         
+		System.out.print("이름을 입력하세요 >> ");
+		String name =sc.next();
+		System.out.println("나이를 입력하세요 >> ");
+		int age = sc.nextInt();
+		System.out.println("성별을 입력하세요 >> ");
+		String gender = sc.next();
+		System.out.println("===================");
+		System.out.println("변경된 학과를 입력하세요 >> ");
+		String cls = sc.next();
+		
+		// Update 쿼리문을 사용해서 학과를 수정합시다!
+		// hint . UPDATE 테이블명 SET 컬럼명 = 변경할 값 WHERE 조건
+		
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			String id = "hr";
+			String pw = "hr";
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			
+			con = DriverManager.getConnection(url, id, pw);
+			
+			String sql1 = "UPDATE STUDENT SET CLASS= ? WHERE NAME= ? AND AGE = ? AND GENDER = ? ";
+					
+			
+			
+			psmt = con.prepareStatement(sql1);
+
+			
+			psmt.setString(1 , cls);
+			psmt.setString(2,name);
+			psmt.setInt(3,age);
+			psmt.setString(4,gender );
+			
+			int cnt = psmt.executeUpdate();
+			
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("동적 로딩 실패");
+			e.printStackTrace();
+		} catch (SQLException e) {
+            System.out.println("권한 확인 실패");
+			e.printStackTrace();
+		}finally {
+			
+			try {
+				if(psmt != null)
+				psmt.close();
+				if(con != null)
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			
+			
+			
+			
+			
+		}
+		
+		
+		
+	}
+
+}
+}

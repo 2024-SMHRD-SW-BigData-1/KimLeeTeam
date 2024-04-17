@@ -1,0 +1,54 @@
+package Controller;
+
+import Model.StudentDAO;
+import Model.StudentDTO;
+
+public class Controller {
+
+	
+	//학생 등록을 위해 Main에서 보내준 dto를 받아줄
+	//insert() 만들어주자 !
+	public void insert(StudentDTO dto) {
+		// DAO에 있는 insert에 dto를 보내주는 작업
+		// 1. StudentDAO 객체생성
+		StudentDAO dao = new StudentDAO();
+		// 2. insert로 dto 보내주기
+		int cnt = dao.insert(dto);
+		if(cnt > 0) {
+			System.out.println("학생 등록 성공!");
+		}else {
+			System.out.println("학생 등록 실패!");
+		}
+			
+	}
+	
+	//학생 삭제를 위해 Main에서 보내준 dto를 받아줄
+	// delete() 만들어주자!
+	public void delete(StudentDTO dto) {
+		// dto를 DㄴAO에 있는 delete()에 보내주기!
+		StudentDAO dao = new StudentDAO();  
+	int cnt = dao.delete(dto);
+		if(cnt > 0) {
+			System.out.println("데이터 삭제 성공");
+		}else {
+			System.out.println("데이터 삭제 실패");
+		}
+		
+	}
+	
+	public void update(StudentDTO dto) {
+		// dto를 DㄴAO에 있는 delete()에 보내주기!
+		StudentDAO dao = new StudentDAO();  
+	int cnt = dao.update(dto);
+		if(cnt > 0) {
+			System.out.println("데이터 수정 성공");
+		}else {
+			System.out.println("데이터 수정 실패");
+		}
+		
+	}
+	
+	
+}
+	
+

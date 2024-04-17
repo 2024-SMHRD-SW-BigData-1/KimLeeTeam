@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Extract method &apos;private static void musicPlay(MP3Player mp3, ArrayList&lt;MusicVO&gt; music, int index)&apos; from &apos;view.Music_view.main(...)&apos; to &apos;view.Music_view&apos;&#x0D;&#x0A;- Original project: &apos;Music_player&apos;&#x0D;&#x0A;- Method name: &apos;musicPlay&apos;&#x0D;&#x0A;- Destination type: &apos;view.Music_view&apos;&#x0D;&#x0A;- Declared visibility: &apos;private&apos;" comments="false" description="Extract method &apos;musicPlay&apos;" destination="0" exceptions="false" flags="786434" id="org.eclipse.jdt.ui.extract.method" input="/src&lt;view{Music_view.java" name="musicPlay" replace="false" selection="1345 125" stamp="1712799941356" version="1.0" visibility="2"/>
+</session>

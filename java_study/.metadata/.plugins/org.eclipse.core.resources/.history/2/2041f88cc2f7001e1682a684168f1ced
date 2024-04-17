@@ -1,0 +1,107 @@
+package ex_arraylist;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Music_main {
+
+	   public static void main(String[] args) {
+	      
+	      //노래제목이 들어가 있는 ArrayList 하나 생성
+	      ArrayList<String> music_list = new ArrayList<String>();
+	      
+	      music_list.add("잘못된 만남");
+	      music_list.add("첫만남은 계획대로 되지 않아");
+	      music_list.add("밤양갱");
+	      music_list.add("Magnetic");
+	      music_list.add("홀씨");
+	      
+	      Scanner sc = new Scanner(System.in);
+	      
+	      System.out.println("음악 재생 프로그램");
+	      boolean isPlaying = true;
+	      int index = 0;
+	      int num = 0;
+	      while(isPlaying) {
+	         System.out.println("1.음악 목록 보기 2. 음악 재생 3. 다음곡 4. 이전곡 5. 노래추가하기 6. 노래 삭제하기 7. 종료");
+	         int choice = sc.nextInt();
+	         
+	         switch (choice) {
+	         case 1:
+	            
+//	            for(int i = 0; i< music_list.size(); i++) {
+//	               System.out.println(music_list.get(i));
+//	            }
+//	            
+	            //for-each
+	            for(String s : music_list) {
+	               num++;
+	               System.out.println(num + "."+ s);
+	            }
+	            
+	            break;
+	         case 2:
+	            
+	            System.out.println(index+1 +"."+music_list.get(index));
+	            
+	            break;
+	         case 3:
+	            //마지막곡에서 다음곡을 -첫번째 곡
+	            index++;
+	            if(index >= music_list.size()) {
+	               index = 0;
+	            }
+	            System.out.println(music_list.get(index));
+	            break;
+	         case 4:
+	            index--;
+	            if(index < 0) {
+	               index = music_list.size()-1;
+	            }
+	            System.out.println(music_list.get(index));
+	            
+	            //첫번째 곡에서 이전곡 - 마지막 곡
+	            break;
+	         case 5:
+	            //맨 뒤에 추가
+	            System.out.println("노래 제목 추가");
+	            sc.nextLine();// 엔터를 임시방편으로 가져갈 nextLine 써주기
+	            String name = sc.nextLine();
+	            
+	            //띄어쓰기가 안들어가요..... 
+	            
+	            //next, nextLine
+
+	            //next - 띄어쓰기가 기준
+	            //nextLine - 엔터 기준
+	            music_list.add(name);
+	            
+	            for(String s : music_list) {
+	               System.out.println(s);
+	            }
+	            
+	            break;
+	         case 6:
+	            System.out.println("삭제할 노래 번호를 입력 하세요");
+	            int remove_num = sc.nextInt();
+	            
+	            music_list.remove(remove_num-1);
+	            break;
+	         case 7:
+	            isPlaying = false;
+	            break;
+	         default:
+	            System.out.println("잘못 입력했습니다.");
+	            break;
+	         }
+	         
+	         
+	      }
+	      
+	      
+	      
+	      
+
+	   }
+
+	}

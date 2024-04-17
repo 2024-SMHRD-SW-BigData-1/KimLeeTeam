@@ -1,0 +1,69 @@
+package View;
+
+import java.util.Scanner;
+
+import Controller.Controller;
+import Model.StudentDTO;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("==== 학생 관리 프로그램 ====");
+        
+		while(true) {
+        	System.out.print("[1]학생전체 조회 [2] 학생검색 [3]학생등록 [4]학생정보수정 [5]학생정보삭제 [6]종료 ");
+            int select = sc.nextInt();
+            if(select == 1) {
+            	//학생 전체 조회
+            }else if(select == 2) {
+            	//학생 검색
+            }else if(select == 3) {
+            	//학생 등록 - insert()
+            	System.out.println("==== 학생 등록 ====");
+            	System.out.println("이름 >> ");
+            	String name = sc.next();
+            	System.out.println("나이 >> ");
+            	int age = sc.nextInt();
+            	System.out.println("성별 >> ");
+            	String gender = sc.next();
+            	System.out.println("학과 >> ");
+            	String cls = sc.next();
+            	
+            	//StudentDTO 객체 생성
+            	StudentDTO dto = new StudentDTO(name,age,gender,cls);
+            	//1 . Controller 객체생성
+            	Controller con = new Controller();
+            	//2 . Controller insert에 접근
+            	con.insert(dto);
+            	
+            }else if(select == 4) {
+            	//학생 정보 수정
+            }else if(select == 5) {
+            	//학생 정보 삭제 = delete()
+            	System.out.println("이름 >> ");
+            	String name = sc.next();
+            	System.out.println("학과 >> ");
+            	String cls = sc.next();
+            	
+            	StudentDTO dto = new StudentDTO(name,cls);
+            	5
+            	// dto 를 Controller 한테 보내주기!
+            	Controller con = new Controller();
+            	con.delete(dto);
+            	
+            	
+            	
+            }else {
+            	System.out.println("프로그램이 종료되었습니다.");
+            	break;
+            }
+		}
+		
+		
+	}
+
+}

@@ -1,0 +1,39 @@
+package model;
+
+public class PhoneDTO {
+      //data transfer object
+	//데이터 변환 객체
+    // 주로 데이터베이스의 컬럼과 맞춰서 작성
+	private String name;
+	private String phone_num;
+    private int age;
+    
+    //생성자 - 생성할때 실행되는 코드
+    
+    
+    
+    
+    
+    
+    
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPhone_num() {
+		return phone_num;
+	}
+	public void setPhone_num(String phone_num) {
+		this.phone_num = phone_num;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	
+	
+}

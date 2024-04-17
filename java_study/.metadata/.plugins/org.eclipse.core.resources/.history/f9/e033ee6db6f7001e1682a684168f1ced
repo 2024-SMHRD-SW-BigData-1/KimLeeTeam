@@ -1,0 +1,9 @@
+package ex_arraylist;
+
+public class MP3Player {
+
+	
+	public void MP3Player() {
+		
+	}
+}

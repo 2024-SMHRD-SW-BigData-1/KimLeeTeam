@@ -1,0 +1,109 @@
+package JDBC기초;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class Ex01insert {
+
+	public static void main(String[] args) {
+
+		// 사용자로부터 이름,나이,성별,학과
+		// 입력받은 내용이 데이터베이스의 studen 테이블에 저장 될 수 있도록 만들자!
+
+		// 1. Studnet 테이블 만들기 - 완료
+		// 2. 자바에서 입력
+		// 3. jdbc코드를 사용해서 DB에 저장 될 수 있도록 만들자
+		// 6단계 코드는..
+
+		Scanner sc = new Scanner(System.in);
+        PreparedStatement psmt = null;
+        Connection con = null;
+		
+		
+		
+		System.out.print("이름 >> ");
+		String name = sc.next();
+		System.out.print("나이 >> ");
+		int age = sc.nextInt();
+		System.out.print("성별 >> ");
+		String gender = sc.next();
+		System.out.print("학과 >> ");
+		String cls = sc.next();
+
+		try {
+
+			// 1. 동적 로딩 : 실행을 시키면 자료형이 결정되는 것
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			// 기울임꼴의 형태 - static (정적인 저장공간)
+			// 저장 공간의 크기가 매우 작다! 함부로 사용하면 안된다!
+
+			// "oracle.jdbc.driver" - 패키지명
+			// "OracleDriver" - 클래스명
+			// 2. 데이터 베이스 연결 - 권한 확인
+			// 준비물 : id,pw,url
+			String id = "hr";
+			String pw = "hr";
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			// jdbc:oracle:thin - 오라클의 thin 드라이버
+			// @localhost - ip 주소 (내 컴퓨터의 ip주소 키워드)
+			// 1521 - 포트번호
+			// xe - DB의 이름(별칭)
+
+			con = DriverManager.getConnection(url, id, pw);
+			
+			// 3. SQL문 준비하기
+			String sql = "INSERT INTO STUDENT VALUES(?, ?, ?, ?)";
+            // 4. SQL문 DB로 전송하기
+			// 4-1 내가 준비한 sql문을 psmt에 넣어주기
+			psmt = con.prepareStatement(sql);
+			// 4-2 ? 인자 채워주기
+			psmt.setString(1 , name);
+			psmt.setInt(2,age);
+			psmt.setString(3, gender);
+			psmt.setString(4, cls);
+			// 4-3 sql 문 전송!
+			int cnt = psmt.executeUpdate();
+			// executeUpdate의 기능 : sql문을 실행 결과값을 받아오는 기능
+			// cnt : 영향을 받은 행이 있는지 없는지에 대해 int의 결과값을 받아온다!
+			if(cnt>0) {
+				System.out.println("데이터 추가 성공");
+			}else {
+				System.out.println("데이터 추가 실패");
+			}
+			
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("동적 로딩 실패");
+			// 1) ojdbc.jar 파일이 잘 적용되어 있는지
+			// 2) 패키지명, 클래스명이 잘 작성 되어있는지
+			e.printStackTrace();
+		}
+		// forName메서드 전달인자 : OracleDriver의 경로
+		catch (SQLException e) {
+			System.out.println("권환 학인 실패");
+			e.printStackTrace();
+		}finally {
+			// 반드시 한번은 실행이 되는 코드!
+			try {
+				if(psmt != null)
+				psmt.close();
+				if(con != null)
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			
+			
+			
+		}
+
+		// 1) syntax error
+		// 2) Exception
+
+	}
+
+}

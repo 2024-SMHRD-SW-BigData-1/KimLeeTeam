@@ -1,0 +1,18 @@
+package Controller;
+
+import Model.StudentDTO;
+
+public class Controller {
+
+	
+	//학생 등록을 위해 Main에서 보내준 dto를 받아줄
+	//insert() 만들어주자 !
+	public void insert(StudentDTO dto) {
+		
+		
+	}
+	
+	
+	
+	
+}
