@@ -149,14 +149,13 @@ public class DAO {
 	/* =================== 게임 시작 후 ========================= */
 
 	// 음악 재생
-	
-	
-	// 문제가져오기
-	public ArrayList<DTO> QUIZ_LIST() {
-
-		ArrayList<DTO> Q_ALL = new ArrayList<>();
-//		ArrayList<DTO> Q_INDEX = new ArrayList<>();
+	public String MS_PLAY(DTO dtoM) {
 		dbOpen();
+		int q_index = dtoM.getQ_INDEX();
+		ArrayList<DTO> Q_ALL = new ArrayList<>();
+
+		String index_url = null;
+
 		String sql = "SELECT * FROM TB_QUIZ";
 
 		try {
@@ -172,20 +171,140 @@ public class DAO {
 				DTO dto = new DTO(Q_NM, Q_URL, Q_SC, Q_HI);
 
 				Q_ALL.add(dto);
-			
-
-				// ?
-//				String URL = Q_INDEX.get(1).getQ_URL();
 
 			}
-
+			index_url = Q_ALL.get(q_index).getQ_URL();
 
 		} catch (SQLException e) {
 			System.out.println("sql 실행 에러");
 			e.printStackTrace();
+		} finally {
+			dbClose();
 		}
-//		System.out.println(index);
-		return Q_ALL;
+
+		return index_url;
+
+	}
+
+	// 문제 정답확인, 누적,하트 반환
+	public ArrayList<Integer> QUIZ_SUM(DTO dtoA) {
+
+		int q_index = dtoA.getQ_INDEX();
+		ArrayList<DTO> Q_ALL = new ArrayList<>();
+		ArrayList<Integer> sum_heart_re = new ArrayList<>();
+		String index_nm;
+		int index_sc;
+		int heart = dtoA.getHeart();
+		int sum = dtoA.getSum();
+		int tf = 0;
+
+		dbOpen();
+
+		String sql = "SELECT * FROM TB_QUIZ";
+
+		try {
+
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+
+			while (rs.next()) {
+				String Q_NM = rs.getString("Q_NM");
+				String Q_URL = rs.getString("Q_URL");
+				int Q_SC = rs.getInt("Q_SC");
+				String Q_HI = rs.getString("Q_HI");
+
+				DTO dto = new DTO(Q_NM, Q_URL, Q_SC, Q_HI);
+
+				Q_ALL.add(dto);
+
+			}
+
+			index_nm = Q_ALL.get(q_index).getQ_NM();
+			index_sc = Q_ALL.get(q_index).getQ_SC();
+
+			if (index_nm.equals(dtoA.getAnswer())) {
+				tf = 0;
+				sum += index_sc;
+			} else {
+				heart--;
+				tf = 1;
+
+			}
+			sum_heart_re.add(0, sum);
+			sum_heart_re.add(1, heart);
+			sum_heart_re.add(2, tf);
+
+		} catch (SQLException e) {
+			System.out.println("sql 실행 에러");
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+
+		return sum_heart_re;
+	}
+
+	// 점수 입력
+	public int sc_in(DTO dtoin) {
+		dbOpen();
+
+		int cnt = 0;
+		String sql = "update tb_user set u_sc = ? where u_id = ? and ? > u_sc";
+
+		try {
+			psmt = conn.prepareStatement(sql);
+
+			psmt.setInt(1, dtoin.getSum());
+			psmt.setString(2, dtoin.getU_ID());
+			psmt.setInt(3, dtoin.getSum());
+
+			cnt = psmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("sql 실행 에러");
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+
+		return cnt;
+
+	}
+
+	// 랭크보기
+
+	public ArrayList<DTO> rank() {
+		dbOpen();
+
+		ArrayList<DTO> U_ALL = new ArrayList<>();
+
+		String sql = "SELECT * FROM TB_USER ORDER BY U_SC DESC";
+
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+
+			while (rs.next()) {
+				String U_ID = rs.getString("U_ID");
+				String U_PW = rs.getString("U_PW");
+				String U_NM = rs.getString("U_NM");
+				int U_SC = rs.getInt("U_SC");
+				int U_PH = rs.getInt("U_PH");
+
+				DTO dto = new DTO(U_ID, U_PW, U_NM, U_SC, U_PH);
+
+				U_ALL.add(dto);
+
+			}
+
+		} catch (SQLException e) {
+			System.out.println("sql 실행 에러");
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+
+		return U_ALL;
 	}
 
 	// 데이터베이스와의 동적로딩/권한확인

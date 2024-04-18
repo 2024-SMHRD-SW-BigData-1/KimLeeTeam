@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 import Controller.Controller;
 import Model.DTO;
-
 import javazoom.jl.player.MP3Player;
 
 public class Main {
@@ -51,6 +50,7 @@ public class Main {
 				Controller con = new Controller();
 
 				ArrayList<DTO> user = con.F_LOGIN(dto);
+				int sum = 0;
 				if (user != null) {
 					isLogin = false;
 					System.out.print("[1]게임시작 [2]랭킹보기 [3]게임종료 ");
@@ -60,15 +60,16 @@ public class Main {
 					if (gameMenu == 1) {
 
 						// 문제 시작
-						
+
 						MP3Player mp3 = new MP3Player();
 
 						int Q_INDEX = 0;
-						int sum = 0;
 						int heart = 3;
 
-						while (true) {
+						while (Q_INDEX == 10 || heart != 0) {
 							System.out.println(Q_INDEX + 1 + "번 문제");
+							DTO dtoM = new DTO(Q_INDEX, 0, 0, null);
+							con.MS_PLAY(dtoM);
 
 							System.out.print("정답 입력(띄어쓰기 없이 입력) : ");
 							String answer = sc.next().trim();
@@ -76,19 +77,34 @@ public class Main {
 							DTO dtoA = new DTO(Q_INDEX, sum, heart, answer);
 							con.QUIZ_SUM(dtoA);
 							Q_INDEX++;
-							ArrayList<Integer> rtn = con.sum_heart_re(dtoA);
-							sum = rtn.get(0);
-							heart = rtn.get(1);
 
-							if (Q_INDEX == 10) {
-								break;
-							}
+							// 누적값, 목숨 받아오기
+							ArrayList<Integer> sum_heart_re = con.QUIZ_SUM(dtoA);
+							sum = sum_heart_re.get(0);
+							heart = sum_heart_re.get(1);
+
+							con.QUIZ_TF(dtoA);
+
+//							if (Q_INDEX == 10) {
+//								break;
+//							}
 
 						}
+						System.out.println();
+						System.out.println("하트소진으로 게임 종료");
 						System.out.println("점수 : " + sum);
+
+						// 개인점수 업데이트
+
+						DTO dtoin = new DTO(sum, U_ID);
+						con.sc_in(dtoin);
+
+						System.out.println("== 랭킹 ==");
+						con.rank();
 
 						// 랭킹보기
 					} else if (gameMenu == 2) {
+						con.rank();
 
 					} else {
 

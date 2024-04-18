@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 import Model.DAO;
 import Model.DTO;
-import View.Main;
 import javazoom.jl.player.MP3Player;
 
 public class Controller {
+
+	MP3Player mp3 = new MP3Player();
 
 	// 회원가입
 	public void F_JOIN(DTO dto) {
@@ -72,100 +73,66 @@ public class Controller {
 
 	/* ============================= 게임 시작 후 ================================= */
 
-//	// 문제이름_가져오기
-//	public void QUIZ_NAME(DTO dto) {
-//		DAO dao = new DAO();
-//		ArrayList<DTO> QUIZ_NAME_RE = dao.QUIZ_LIST();
-//	}
+	// 노래재생
 
-//	// 문제_재생하기
-//	public void QUIZ_PLAY(DTO dto) {
-//		DAO dao = new DAO();
-//		ArrayList<DTO> QUIZ_URL_RE = dao.QUIZ_LIST();
-//		String URL = QUIZ_URL_RE.get(1).getQ_URL();
-//
-//	}
-
-	// 게임 리스트
-//	public void QUIZ_LIST(DTO dtoA) {
-//		DAO dao = new DAO();
-//		
-//		
-//	}
-	
-	// 소리 출력
-	public void QUIZ_PLAY(DTO dtoA) {
+	public void MS_PLAY(DTO dtoM) {
 		DAO dao = new DAO();
-		ArrayList<DTO> QUIZ_URL_RE = dao.QUIZ_LIST();
-		
-		String url = QUIZ_URL_RE.get(dtoA.getQ_INDEX()).getQ_URL();
-		
-		MP3Player mp3;
-		
+		String url = dao.MS_PLAY(dtoM);
+		mp3.play(url);
 	}
 
+	public void stopMusic() {
+		if (mp3.isPlaying()) {
+			mp3.stop();
+		}
+	}
 
-	// 정답확인, 점수누적
-	public void QUIZ_SUM(DTO dtoA) {
+	// 누적_하트
+	public ArrayList<Integer> QUIZ_SUM(DTO dtoA) {
 		DAO dao = new DAO();
-		int heart = dtoA.getHeart();
-		int sum = dtoA.getSum();
-		
-		ArrayList<DTO> QUIZ_URL_RE = dao.QUIZ_LIST();
-		
-		String name_result = QUIZ_URL_RE.get(dtoA.getQ_INDEX()).getQ_NM();
-//		System.out.println(name_result);
-		
-		int score = QUIZ_URL_RE.get(dtoA.getQ_INDEX()).getQ_SC();
-//		System.out.println(score);
+		ArrayList<Integer> sum_heart_re = dao.QUIZ_SUM(dtoA);
 
-		// 메인에서 가져온 입력값이랑 비교
-		if (name_result.equals(dtoA.getAnswer())) {
-			System.out.println("정답입니다");
-			sum += score;
-//			System.out.println("점수 : " + sum+"점");
+		return sum_heart_re;
+	}
 
+	public void QUIZ_TF(DTO dtoA) {
+		DAO dao = new DAO();
+		ArrayList<Integer> sum_heart_re = dao.QUIZ_SUM(dtoA);
+
+		if (sum_heart_re.get(2) == 0) {
+			System.out.println("정답입니다!");
 		} else {
-			heart--;
-			System.out.println("틀렸습니다");
-
-			if (heart == 0) {
-				System.out.println("하트소진으로 게임 종료");
-				System.out.println("점수 : " + sum);
-				System.exit(0);
-			}
+			System.out.println("틀렸습니다...");
 		}
 
 	}
+
+
 	
-	public ArrayList<Integer> sum_heart_re(DTO dtoA) {
+	// 점수 넣기
+	public void sc_in(DTO dtoin) {
 		DAO dao = new DAO();
-		int heart = dtoA.getHeart();
-		int sum = dtoA.getSum();
-		
-		ArrayList<DTO> QUIZ_URL_RE = dao.QUIZ_LIST();
-		
-		String name_result = QUIZ_URL_RE.get(dtoA.getQ_INDEX()).getQ_NM();
-		
-		int score = QUIZ_URL_RE.get(dtoA.getQ_INDEX()).getQ_SC();
 
-		// 메인에서 가져온 입력값이랑 비교
-		if (name_result.equals(dtoA.getAnswer())) {
-			sum += score;
+		int cnt = dao.sc_in(dtoin);
+
+		if (cnt > 0) {
+			System.out.println("점수 입력 성공");
 		} else {
-			heart--;
-
-			if (heart == 0) {
-				System.exit(0);
-			}
-		
-		}		
-		ArrayList<Integer> clear = new ArrayList<>();
-		clear.add(0, sum);
-		clear.add(1, heart);
-		
-		return clear;
-
+			System.out.println("점수 입력 실패");
+		}
 	}
+	
+	// 랭크
+	public void rank() {
+		DAO dao = new DAO();
+		
+		ArrayList<DTO> U_ALL = dao.rank();
+		
+		for(int i = 0 ; i <U_ALL.size() ; i++) {
+			System.out.println(i+1 +"등 " +U_ALL.get(i).getU_NM() +" , " +U_ALL.get(i).getU_SC());
+		}
+	}
+
+
 
 }
